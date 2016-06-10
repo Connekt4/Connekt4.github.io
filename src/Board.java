@@ -35,7 +35,7 @@ public class Board {
 			for(int b = 0; b < pieces.length; b++){
 				Piece p = pieces[b][a];
 				if(p == null){
-					if(b + 3 < pieces.length) b += 3;
+					continue;
 				}
 				else if(p != null){
 					if(p.isBlue()){

@@ -108,6 +108,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_R){
 			Board.pieces = new Piece[7][6];
+			Board.currentColor = true;
 		}
 		
 	}
