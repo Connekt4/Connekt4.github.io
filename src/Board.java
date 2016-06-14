@@ -1,12 +1,14 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 
 public class Board {
 
 	static final int WIDTH_SIZE = (Connect4.WIDTH) / 7, HEIGHT_SIZE = (Connect4.HEIGHT) / 6;
 	public static Piece[][] pieces = new Piece[7][6];
-	private static boolean hasWinner = false;
+	public static ArrayList<int[]> moves = new ArrayList<>();
+	//private static boolean hasWinner = false;
 	public static boolean currentColor = true;
 	
 	

@@ -80,6 +80,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 				int x = Board.positionOfEmpty(mouseCol)[3];
 				Board.pieces[mouseCol][x] = new Piece(Board.positionOfEmpty(mouseCol)[0], Board.positionOfEmpty(mouseCol)[1], Board.currentColor);
 				Board.currentColor = !Board.currentColor;
+				Board.moves.add(new int[]{mouseCol, x});
 			}catch(Exception e1){
 				System.out.println("Column is full!");
 			}
@@ -109,6 +110,16 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		if(key == KeyEvent.VK_R){
 			Board.pieces = new Piece[7][6];
 			Board.currentColor = true;
+			repaint();
+		}
+		if(key == KeyEvent.VK_U){
+			try{
+				Board.pieces[Board.moves.get(Board.moves.size() - 1)[0]][Board.moves.remove(Board.moves.size() - 1)[1]] = null;
+				Board.currentColor = !Board.currentColor;
+				repaint();
+			} catch(Exception e1){
+				System.out.println("All undos are used up.");
+			}
 		}
 		
 	}
