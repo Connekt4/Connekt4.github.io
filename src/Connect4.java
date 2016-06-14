@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 
 
 public class Connect4 extends Applet implements MouseMotionListener, MouseListener, KeyListener{
@@ -110,6 +111,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		if(key == KeyEvent.VK_R){
 			Board.pieces = new Piece[7][6];
 			Board.currentColor = true;
+			Board.moves = new ArrayList<>();
 			repaint();
 		}
 		if(key == KeyEvent.VK_U){
