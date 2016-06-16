@@ -1,6 +1,7 @@
 import java.applet.Applet;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -13,6 +14,8 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 	static final int WIDTH = 700, HEIGHT = (int)(((double)(WIDTH / 7)) * 6);
 	static final int BORDER_WIDTH = 1250, BORDER_HEIGHT = 900;
 	int mouseCol = -1;
+	Graphics bg;
+	Image offscreen;
 	public void init(){
 		
 		setBackground(Colors.LIGHT_GREEN);
@@ -21,6 +24,8 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		addMouseMotionListener(this);
 		addMouseListener(this);
 		addKeyListener(this);
+		offscreen = createImage(BORDER_WIDTH, BORDER_HEIGHT);
+		bg = offscreen.getGraphics();
 	}
 	public void start(){
 		
@@ -28,21 +33,28 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 	
 	public void paint(Graphics g){
 		//piece.display(g);
-		Board.display(g);
+		bg.clearRect(0, 0, BORDER_WIDTH, BORDER_HEIGHT);
+		Board.display(bg);
 		if(!Board.fourInARow()){
-			displayMouseCol(g);
+			displayMouseCol(bg);
 		}
 		else
-			displayWinner(g);
+			displayWinner(bg);
 		
+		g.drawImage(offscreen, 0, 0, this);
+		
+	}
+	
+	public void update(Graphics g){
+		paint(g);
 	}
 	
 	public void displayMouseCol(Graphics g){
 		String display = "mouseCol = " + mouseCol;
 		Font myFont = g.getFont();
 		Font newFont = new Font(myFont.getName(), myFont.getStyle(), 25);
-		g.setFont(newFont);
-		g.drawString(display, (BORDER_WIDTH - WIDTH) / 2, (BORDER_HEIGHT - HEIGHT) / 3);
+		bg.setFont(newFont);
+		bg.drawString(display, (BORDER_WIDTH - WIDTH) / 2, (BORDER_HEIGHT - HEIGHT) / 3);
 	}
 	
 	public void displayWinner(Graphics g){
@@ -55,8 +67,8 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		
 		Font myFont = g.getFont();
 		Font newFont = new Font(myFont.getName(), myFont.getStyle(), 100);
-		g.setFont(newFont);
-		g.drawString(display, (BORDER_WIDTH - WIDTH) / 6, (BORDER_HEIGHT - HEIGHT) / 3);
+		bg.setFont(newFont);
+		bg.drawString(display, (BORDER_WIDTH - WIDTH) / 6, (BORDER_HEIGHT - HEIGHT) / 3);
 	}
 	
 	@Override
@@ -107,6 +119,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 	}
 	@Override
 	public void keyPressed(KeyEvent e) {
+		char keyChar = e.getKeyChar();
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_R){
 			Board.pieces = new Piece[7][6];
@@ -123,6 +136,19 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 				System.out.println("All undos are used up.");
 			}
 		}
+		if(keyChar >= 48 && keyChar <= 54){
+			try{
+				int t = Character.getNumericValue(keyChar);
+				int x = Board.positionOfEmpty(t)[3];
+				Board.pieces[t][x] = new Piece(Board.positionOfEmpty(t)[0], Board.positionOfEmpty(t)[1], Board.currentColor);
+				Board.currentColor = !Board.currentColor;
+				Board.moves.add(new int[]{t, x});
+				repaint();
+			} catch(Exception e1){
+				System.out.println("Column is full!");
+			}
+		}
+		
 		
 	}
 	@Override

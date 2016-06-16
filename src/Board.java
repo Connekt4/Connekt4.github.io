@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -197,12 +198,17 @@ public class Board {
 	
 	public static void display(Graphics g){
 		Color current = g.getColor();
+		Font currentFont = g.getFont();
 		
 		g.setColor(Colors.BLACK);
+		
+		Font newFont = new Font(currentFont.getName(), currentFont.getStyle(), 25);
+		g.setFont(newFont);
 		
 		//Draw vertical lines
 		for(int i = 0; i < pieces.length + 1; i++){
 			g.drawLine(findCoordinate(i, 0)[0], findCoordinate(i, 0)[1], findCoordinate(i, 6)[0], findCoordinate(i, 6)[1]);
+			if(i != pieces.length) g.drawString("" + i, findCoordinate(i, 6)[0] + Connect4.WIDTH / pieces.length / 2, findCoordinate(i, 6)[1] + 50);
 		}
 		
 		//Draw horizontal lines
@@ -218,5 +224,6 @@ public class Board {
 		}
 		
 		g.setColor(current);
+		g.setFont(currentFont);
 	}
 }
