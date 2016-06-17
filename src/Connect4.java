@@ -40,6 +40,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		Board.display(bg);
 		if(!Board.fourInARow()){
 			displayMouseCol(bg);
+			displayOptions(bg);
 		}
 		else
 			displayWinner(bg);
@@ -56,8 +57,16 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		String display = "mouseCol = " + mouseCol;
 		Font myFont = g.getFont();
 		Font newFont = new Font(myFont.getName(), myFont.getStyle(), 25);
-		bg.setFont(newFont);
-		bg.drawString(display, (BORDER_WIDTH - WIDTH) / 2, (BORDER_HEIGHT - HEIGHT) / 3);
+		g.setFont(newFont);
+		g.drawString(display, (BORDER_WIDTH - WIDTH) / 2, (BORDER_HEIGHT - HEIGHT) / 3);
+	}
+	
+	public void displayOptions(Graphics g){
+		String display = "Press \"U\" to undo";
+		Font myFont = g.getFont();
+		Font newFont = new Font(myFont.getName(), myFont.getStyle(), 25);
+		g.setFont(newFont);
+		g.drawString(display, (BORDER_WIDTH - WIDTH) + 2 * (WIDTH / 6), (BORDER_HEIGHT - HEIGHT) / 3);
 	}
 	
 	public void displayWinner(Graphics g){
@@ -72,6 +81,11 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 		Font newFont = new Font(myFont.getName(), myFont.getStyle(), 100);
 		bg.setFont(newFont);
 		bg.drawString(display, (BORDER_WIDTH - WIDTH) / 6, (BORDER_HEIGHT - HEIGHT) / 3);
+		
+		String reset = "Press \"R\" to restart";
+		newFont = new Font(myFont.getName(), myFont.getStyle(), 25);
+		g.setFont(newFont);
+		g.drawString(reset, (BORDER_WIDTH - WIDTH) + 2 * (WIDTH / 6), (BORDER_HEIGHT - HEIGHT) / 2 - 10);
 	}
 	
 	@Override
