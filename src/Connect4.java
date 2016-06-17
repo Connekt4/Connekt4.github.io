@@ -9,6 +9,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+/*
+ * Made by @IshanArya
+ */
 
 public class Connect4 extends Applet implements MouseMotionListener, MouseListener, KeyListener{
 	static final int WIDTH = 700, HEIGHT = (int)(((double)(WIDTH / 7)) * 6);
@@ -86,20 +89,22 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 	}
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(mouseCol == -1)
-			return; //System.out.println("Not a block");
-		else{
-			try{
-				int x = Board.positionOfEmpty(mouseCol)[3];
-				Board.pieces[mouseCol][x] = new Piece(Board.positionOfEmpty(mouseCol)[0], Board.positionOfEmpty(mouseCol)[1], Board.currentColor);
-				Board.currentColor = !Board.currentColor;
-				Board.moves.add(new int[]{mouseCol, x});
-			}catch(Exception e1){
-				System.out.println("Column is full!");
-			}
+		if(!Board.fourInARow()){
+			if(mouseCol == -1)
+				return; //System.out.println("Not a block");
+			else{
+				try{
+					int x = Board.positionOfEmpty(mouseCol)[3];
+					Board.pieces[mouseCol][x] = new Piece(Board.positionOfEmpty(mouseCol)[0], Board.positionOfEmpty(mouseCol)[1], Board.currentColor);
+					Board.currentColor = !Board.currentColor;
+					Board.moves.add(new int[]{mouseCol, x});
+				}catch(Exception e1){
+					System.out.println("Column is full!");
+				}
 			//System.out.println("Place!");
+			}
+			repaint();
 		}
-		repaint();
 	}
 	@Override
 	public void mouseEntered(MouseEvent e) {
@@ -136,7 +141,7 @@ public class Connect4 extends Applet implements MouseMotionListener, MouseListen
 				System.out.println("All undos are used up.");
 			}
 		}
-		if(keyChar >= 48 && keyChar <= 54){
+		if(keyChar >= 48 && keyChar <= 54 && !Board.fourInARow()){
 			try{
 				int t = Character.getNumericValue(keyChar);
 				int x = Board.positionOfEmpty(t)[3];
